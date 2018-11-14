@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/_template.xhtml">
+	<ui:define name="titulo">Lista de Filme</ui:define>
+	<ui:define name="churros">
+		<h1>Lista de Filmes</h1>
+		<h:messages />
+		<h:dataTable styleClass="table" value="#{filmeBean.filmes}" var="f">
+			<h:column>
+				<f:facet name="header">Título</f:facet>
+				#{f.titulo}
+			</h:column>
+			<h:column>
+				<f:facet name="header">Gênero</f:facet>
+				#{f.genero}
+			</h:column>
+			<h:column>
+				<f:facet name="header">Download</f:facet>
+				<h:selectBooleanCheckbox value="#{f.download}"
+					disabled="true"/>
+				#{f.download?"Sim":"Não"}
+			</h:column>
+			<h:column>
+				<f:facet name="header">Data Lançamento</f:facet>
+				<h:outputText value="#{f.dataLancamento.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</h:column>
+			<h:column>
+				<f:facet name="header">Ações</f:facet>
+				<h:form>
+					<h:commandButton 
+						styleClass="btn btn-outline-info btn-sm mr-2"
+						action="filme" value="Editar">
+						<f:setPropertyActionListener value="#{f}" 
+							target="#{filmeBean.filme}" />
+					</h:commandButton>
+					<h:commandButton 
+						styleClass="btn btn-outline-danger btn-sm"
+						action="#{filmeBean.excluir(f.codigo)}" 
+						value="Excluir" />
+				</h:form>
+			</h:column>
+		</h:dataTable>
+		<h:link styleClass="btn btn-success" outcome="filme">Cadastrar Novo</h:link>
+	</ui:define>
+</ui:composition>
+</html>

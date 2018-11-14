@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/_template.xhtml">
+	<ui:define name="titulo">Cadastro de Filme</ui:define>
+	<ui:define name="churros">
+		
+		<f:loadBundle basename="br.com.fiap.bundle.filme" var="f"/>
+		
+		<h1>#{f.page_title}</h1>
+		<h:form>
+			<h:inputHidden value="#{filmeBean.filme.codigo}" />
+			<div class="form-group">
+				<h:outputLabel value="#{f.lbl_title}" for="titulo" />
+				<h:inputText required="true" 
+					validator="#{filmeBean.validarTitulo}"
+					requiredMessage="Título é obrigatório"
+					styleClass="form-control" 
+					value="#{filmeBean.filme.titulo}" id="titulo" />
+				<h:message for="titulo" styleClass="text-danger"/>	
+			</div>
+			<div class="form-group">
+				<h:outputLabel value="#{f.lbl_kind}" for="ge"/>
+				<h:inputText styleClass="form-control" 
+					value="#{filmeBean.filme.genero}" id="ge" >
+					<f:validateLength minimum="3" maximum="10"/>
+				</h:inputText>
+				<h:message for="ge" styleClass="text-danger"/>
+			</div>
+			<div class="form-group">
+				<h:outputLabel value="#{f.lbl_date}" for="data" />
+				<h:inputText id="data" styleClass="form-control"
+					value="#{filmeBean.filme.dataLancamento.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy"/>
+					<f:validator validatorId="dataFutura"/>
+				</h:inputText>
+				<h:message for="data" styleClass="text-danger"/>
+			</div>
+			<div class="form-group">
+				<h:selectBooleanCheckbox id="download" 
+					value="#{filmeBean.filme.download}" />
+				<h:outputLabel value="#{f.lbl_download}" for="download" />
+			</div>
+			<h:commandButton styleClass="btn btn-success" 
+				action="#{filmeBean.salvar()}" value="#{f.btn_save}" />
+			<h:link outcome="lista-filme" 
+				styleClass="ml-2 btn btn-dark">#{f.btn_catalogue}</h:link>	
+		</h:form>
+	</ui:define>
+</ui:composition>
+</html>
